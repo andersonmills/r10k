@@ -25,7 +25,8 @@ class R10K::Module::Forge < R10K::Module::Base
 
   def initialize(title, dirname, args)
     super
-    @metadata = R10K::Module::Metadata.new(path + 'metadata.json')
+    #@metadata = R10K::Module::Metadata.new(path + 'metadata.json')
+    @metadata = R10K::Module::Metadata.new
 
     if args.is_a? String
       @expected_version = R10K::SemVer.new(args)
@@ -64,7 +65,7 @@ class R10K::Module::Forge < R10K::Module::Base
 
   # @return [R10K::SemVer] The version of the currently installed module
   def current_version
-    @metadata.read
+    @metadata.read(@path + 'metadata.json')
     @metadata.version
   end
 
@@ -89,7 +90,7 @@ class R10K::Module::Forge < R10K::Module::Base
     if not self.exist?
       # The module is not installed
       return :absent
-    elsif not @metadata.exist?
+    elsif not File.exist?(@path + 'metadata.json')
       # The directory exists but doesn't have a metadata file; it probably
       # isn't a forge module.
       return :mismatched
@@ -97,7 +98,7 @@ class R10K::Module::Forge < R10K::Module::Base
 
     # The module is present and has a metadata file, read the metadata to
     # determine the state of the module.
-    @metadata.read
+    @metadata.read(@path + 'metadata.json')
 
     if not @owner == @metadata.author
       # This is a forge module but the installed module is a different author
