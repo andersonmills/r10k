@@ -36,10 +36,11 @@ class R10K::Module::Base
   # @param dirname [String]
   # @param args [Array]
   def initialize(title, dirname, args)
-    @title   = title
+    normalized_title = PuppetForge::V3.normalize_name(title)
+    @title   = normalized_title
     @dirname = dirname
     @args    = args
-    @owner, @name = parse_title(title)
+    @owner, @name = parse_title(normalized_title)
     @path = Pathname.new(File.join(@dirname, @name))
   end
 

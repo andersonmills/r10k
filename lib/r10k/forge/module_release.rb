@@ -42,7 +42,7 @@ module R10K
         @version   = version
 
         PuppetForge::V3::Release.conn = conn
-        @forge_release = PuppetForge::V3::Release.new({ :name => @full_name, :version => @version, :slug => "#{@fullname}-#{@version}" })
+        @forge_release = PuppetForge::V3::Release.new({ :name => @full_name, :version => @version, :slug => "#{@full_name}-#{@version}" })
 
         @download_path = Pathname.new(Dir.mktmpdir) + (slug + '.tar.gz')
         @unpack_path   = Pathname.new(Dir.mktmpdir) + slug
